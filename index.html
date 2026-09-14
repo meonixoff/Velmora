@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velmora</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" href="./icon.svg">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
+body{background:#f7f7f8;color:#171717;padding-bottom:82px}
+.header{height:62px;background:white;border-bottom:1px solid #e7e7e7;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:50}
+.logo{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.header-right{display:flex;align-items:center;gap:12px}
+.simulation{font-size:9px;font-weight:700;background:#f0f0f0;color:#777;padding:6px 8px;border-radius:6px;letter-spacing:.4px}
+.bell{font-size:20px}
+.main{max-width:850px;margin:auto;padding:22px 17px 30px}
+.page{display:none;animation:pageIn .2s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.title{font-size:28px;font-weight:780;letter-spacing:-.7px}
+.subtitle{color:#777;font-size:13px;margin-top:5px;margin-bottom:20px}
+.revenue-card{background:#171717;color:white;border-radius:18px;padding:21px;margin-bottom:14px}
+.revenue-label{font-size:12px;opacity:.65}
+.revenue{font-size:32px;font-weight:800;margin-top:6px;letter-spacing:-1px}
+.revenue-change{font-size:11px;color:#a9e6bd;margin-top:8px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.card{background:white;border:1px solid #e5e5e5;border-radius:15px;padding:16px}
+.stat-label{font-size:11px;color:#777;margin-bottom:8px}
+.stat-value{font-size:22px;font-weight:760}
+.section{margin-top:24px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.section-title{font-size:17px;font-weight:740}
+.see-all{font-size:12px;font-weight:650;color:#555;cursor:pointer}
+.chart-card{padding:16px 10px 10px}
+.chart{height:170px;display:flex;align-items:flex-end;gap:6px}
+.bar{flex:1;background:#202020;border-radius:5px 5px 2px 2px;min-height:8px;transition:height .4s ease}
+.order{background:white;border:1px solid #e5e5e5;border-radius:14px;padding:15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;cursor:pointer}
+.order-left{display:flex;flex-direction:column;gap:4px}
+.order-id{font-size:14px;font-weight:720}
+.order-info{font-size:11px;color:#777}
+.order-right{text-align:right}
+.order-price{font-size:14px;font-weight:720}
+.order-status{font-size:10px;color:#168544;margin-top:4px;font-weight:650}
+.notifications{position:fixed;top:72px;left:12px;right:12px;z-index:200;pointer-events:none}
+.notification{background:white;border:1px solid #ddd;border-radius:14px;padding:13px 14px;box-shadow:0 8px 28px rgba(0,0,0,.14);margin-bottom:8px;animation:notificationIn .3s ease}
+.notification-title{font-size:13px;font-weight:750}
+.notification-text{font-size:11px;color:#777;margin-top:3px}
+@keyframes notificationIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+.search{background:white;border:1px solid #ddd;border-radius:10px;padding:12px;width:100%;font-size:13px;outline:none;margin-bottom:14px}
+.filters{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px}
+.filter{border:1px solid #ddd;background:white;padding:8px 11px;border-radius:8px;font-size:11px;white-space:nowrap}
+.filter.active{background:#171717;color:white;border-color:#171717}
+.back{font-size:13px;font-weight:650;margin-bottom:18px;cursor:pointer}
+.detail-card{background:white;border:1px solid #e4e4e4;border-radius:16px;padding:18px;margin-bottom:12px}
+.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.detail-id{font-size:20px;font-weight:780}
+.detail-status{background:#e9f7ed;color:#168544;padding:6px 9px;border-radius:7px;font-size:10px;font-weight:700}
+.item{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #eee;font-size:13px}
+.item:last-child{border-bottom:none}
+.item-name{font-weight:600}
+.item-price{font-weight:650}
+.total{display:flex;justify-content:space-between;margin-top:16px;font-size:18px;font-weight:780}
+.product{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #eee}
+.product:last-child{border-bottom:none}
+.product-icon{width:46px;height:46px;border-radius:11px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:21px}
+.product-name{font-size:13px;font-weight:680}
+.product-price{font-size:11px;color:#777;margin-top:3px}
+.setting{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #eee}
+.setting:last-child{border-bottom:none}
+.setting-name{font-size:13px;font-weight:650}
+.setting-description{font-size:10px;color:#888;margin-top:3px}
+.switch{width:42px;height:24px;background:#222;border-radius:20px;position:relative;cursor:pointer}
+.switch::after{content:"";position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;right:3px}
+.speed-buttons{display:flex;gap:7px;margin-top:10px}
+.speed-button{flex:1;border:1px solid #ddd;background:white;padding:9px 4px;border-radius:8px;font-size:10px}
+.speed-button.active{background:#171717;color:white}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:rgba(255,255,255,.97);backdrop-filter:blur(15px);border-top:1px solid #ddd;display:flex;justify-content:space-around;align-items:center;z-index:100}
+.nav-item{text-align:center;font-size:9px;color:#777;cursor:pointer;min-width:60px}
+.nav-icon{font-size:20px;display:block;margin-bottom:3px}
+.nav-item.active{color:#111;font-weight:700}
+@media(min-width:800px){.main{padding:35px 25px}.stats{grid-template-columns:repeat(4,1fr)}.notifications{left:auto;width:350px}.bottom-nav{left:50%;transform:translateX(-50%);width:600px;border:1px solid #ddd;border-radius:18px 18px 0 0}}
+</style>
+</head>
+<body>
+<header class="header"><div class="logo">VELMORA</div><div class="header-right"><div class="simulation">SIMULATION</div><div class="bell">🔔</div></div></header>
+<div class="notifications" id="notifications"></div>
+<main class="main">
+<section class="page active" id="home">
+<h1 class="title">Accueil</h1><p class="subtitle">Vue d'ensemble de votre boutique</p>
+<div class="revenue-card"><div class="revenue-label">Chiffre d'affaires</div><div class="revenue" id="revenue">2 486,40 €</div><div class="revenue-change">↑ 12,4 % aujourd'hui</div></div>
+<div class="stats">
+<div class="card"><div class="stat-label">Commandes</div><div class="stat-value" id="orderCount">42</div></div>
+<div class="card"><div class="stat-label">Articles vendus</div><div class="stat-value" id="productCount">63</div></div>
+<div class="card"><div class="stat-label">Panier moyen</div><div class="stat-value" id="average">59,20 €</div></div>
+<div class="card"><div class="stat-label">Clients</div><div class="stat-value" id="customerCount">38</div></div>
+</div>
+<div class="section"><div class="section-head"><div class="section-title">Ventes</div><div class="see-all">Aujourd'hui</div></div><div class="card chart-card"><div class="chart" id="chart"><div class="bar" style="height:28%"></div><div class="bar" style="height:42%"></div><div class="bar" style="height:36%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:69%"></div><div class="bar" style="height:85%"></div></div></div></div>
+<div class="section"><div class="section-head"><div class="section-title">Commandes récentes</div><div class="see-all" onclick="openPage('orders')">Voir tout</div></div><div id="recentOrders"></div></div>
+</section>
+<section class="page" id="orders"><h1 class="title">Commandes</h1><p class="subtitle">Historique des commandes fictives</p><input class="search" placeholder="🔎 Rechercher une commande..." oninput="searchOrders(this.value)"><div class="filters"><div class="filter active">Toutes</div><div class="filter">Payées</div><div class="filter">Préparation</div><div class="filter">Expédiées</div></div><div id="allOrders"></div></section>
+<section class="page" id="orderDetail"><div class="back" onclick="openPage('orders')">← Retour aux commandes</div><div id="detailContent"></div></section>
+<section class="page" id="products"><h1 class="title">Produits</h1><p class="subtitle">Catalogue de la boutique</p><div class="card">
+<div class="product"><div class="product-icon">⌚</div><div><div class="product-name">Montre Velmora</div><div class="product-price">59,90 € · 21 vendues</div></div></div>
+<div class="product"><div class="product-icon">👜</div><div><div class="product-name">Sac Velmora</div><div class="product-price">49,90 € · 18 vendus</div></div></div>
+<div class="product"><div class="product-icon">💎</div><div><div class="product-name">Bracelet Velmora</div><div class="product-price">39,90 € · 14 vendus</div></div></div>
+<div class="product"><div class="product-icon">📿</div><div><div class="product-name">Collier Velmora</div><div class="product-price">44,90 € · 10 vendus</div></div></div>
+<div class="product"><div class="product-icon">👛</div><div><div class="product-name">Portefeuille Velmora</div><div class="product-price">34,90 € · 8 vendus</div></div></div>
+</div></section>
+<section class="page" id="analytics"><h1 class="title">Analytics</h1><p class="subtitle">Performances de la simulation</p><div class="stats">
+<div class="card"><div class="stat-label">CA</div><div class="stat-value" id="analyticsRevenue">2 486 €</div></div>
+<div class="card"><div class="stat-label">Commandes</div><div class="stat-value" id="analyticsOrders">42</div></div>
+<div class="card"><div class="stat-label">Conversion</div><div class="stat-value">3,8 %</div></div>
+<div class="card"><div class="stat-label">Visiteurs</div><div class="stat-value">1 248</div></div>
+</div></section>
+<section class="page" id="settings"><h1 class="title">Paramètres</h1><p class="subtitle">Configuration de la simulation</p><div class="card">
+<div class="setting"><div><div class="setting-name">Simulation automatique</div><div class="setting-description">Générer des commandes automatiquement</div></div><div class="switch" onclick="toggleSimulation()" id="switch"></div></div>
+<div class="setting"><div><div class="setting-name">Vitesse</div><div class="setting-description">Fréquence des nouvelles commandes</div></div></div>
+<div class="speed-buttons"><button class="speed-button" onclick="setSpeed(30000,this)">Lente</button><button class="speed-button active" onclick="setSpeed(12000,this)">Normale</button><button class="speed-button" onclick="setSpeed(5000,this)">Rapide</button></div>
+<div class="setting" style="margin-top:10px"><div><div class="setting-name">Mode simulation</div><div class="setting-description">Toutes les données affichées sont fictives</div></div><div>🟢</div></div>
+</div></section>
+</main>
+<nav class="bottom-nav">
+<div class="nav-item active" onclick="openPage('home',this)"><span class="nav-icon">⌂</span>Accueil</div>
+<div class="nav-item" onclick="openPage('orders',this)"><span class="nav-icon">🛒</span>Commandes</div>
+<div class="nav-item" onclick="openPage('products',this)"><span class="nav-icon">📦</span>Produits</div>
+<div class="nav-item" onclick="openPage('analytics',this)"><span class="nav-icon">📊</span>Analytics</div>
+<div class="nav-item" onclick="openPage('settings',this)"><span class="nav-icon">☰</span>Plus</div>
+</nav>
+<script>
+let revenue=2486.40,orderNumber=1048,orderCount=42,productCount=63,customerCount=38,simulationActive=true,intervalTime=12000,timer;
+const products=[{name:"Montre Velmora",price:59.90,icon:"⌚"},{name:"Sac Velmora",price:49.90,icon:"👜"},{name:"Bracelet Velmora",price:39.90,icon:"💎"},{name:"Collier Velmora",price:44.90,icon:"📿"},{name:"Portefeuille Velmora",price:34.90,icon:"👛"}];
+const clients=["Emma Bernard","Lucas Martin","Sarah Morel","Thomas Robert","Chloé Petit","Nathan Garcia","Jules Laurent","Léa Robert","Alexandre Simon","Camille Michel"];
+let orders=[{id:1047,client:"Emma Bernard",items:[{name:"Montre Velmora",qty:1,price:59.90,icon:"⌚"},{name:"Bracelet Velmora",qty:1,price:39.90,icon:"💎"}],status:"Payée",time:"12:48"},{id:1046,client:"Lucas Martin",items:[{name:"Sac Velmora",qty:1,price:49.90,icon:"👜"}],status:"Expédiée",time:"12:42"},{id:1045,client:"Sarah Morel",items:[{name:"Montre Velmora",qty:1,price:59.90,icon:"⌚"},{name:"Collier Velmora",qty:1,price:44.90,icon:"📿"},{name:"Bracelet Velmora",qty:1,price:39.90,icon:"💎"}],status:"Préparation",time:"12:36"}];
+renderOrders();startSimulation();
+function openPage(page,element){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));const target=document.getElementById(page);if(target)target.classList.add("active");document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));if(element)element.classList.add("active");else document.querySelectorAll(".nav-item").forEach(item=>{if(item.getAttribute("onclick")&&item.getAttribute("onclick").includes(page))item.classList.add("active")});window.scrollTo({top:0,behavior:"smooth"})}
+function orderTotal(order){return order.items.reduce((sum,item)=>sum+(item.price*item.qty),0)}
+function renderOrders(){const recent=document.getElementById("recentOrders");recent.innerHTML="";orders.slice(0,5).forEach(order=>recent.appendChild(createOrderElement(order)));const all=document.getElementById("allOrders");all.innerHTML="";orders.forEach(order=>all.appendChild(createOrderElement(order)))}
+function createOrderElement(order){const element=document.createElement("div");element.className="order";const total=orderTotal(order);const itemCount=order.items.reduce((sum,item)=>sum+item.qty,0);element.innerHTML=`<div class="order-left"><div class="order-id">#${order.id}</div><div class="order-info">${itemCount} article${itemCount>1?"s":""} · ${order.client}</div><div class="order-info">${order.time}</div></div><div class="order-right"><div class="order-price">${formatPrice(total)}</div><div class="order-status">${order.status}</div></div>`;element.onclick=()=>{showOrderDetail(order)};return element}
+function showOrderDetail(order){const content=document.getElementById("detailContent");const total=orderTotal(order);let itemsHTML="";order.items.forEach(item=>{itemsHTML+=`<div class="item"><div><div class="item-name">${item.icon} ${item.name}</div><div style="font-size:10px;color:#888;margin-top:3px">Quantité : ${item.qty}</div></div><div class="item-price">${formatPrice(item.price*item.qty)}</div></div>`});content.innerHTML=`<div class="detail-card"><div class="detail-header"><div class="detail-id">Commande #${order.id}</div><div class="detail-status">${order.status}</div></div><div style="font-size:12px;color:#777">${order.client}</div><div style="font-size:11px;color:#999;margin-top:4px">Aujourd'hui à ${order.time}</div></div><div class="detail-card"><div style="font-size:14px;font-weight:700;margin-bottom:3px">Articles</div>${itemsHTML}<div class="total"><span>Total</span><span>${formatPrice(total)}</span></div></div>`;openPage("orderDetail")}
+function generateOrder(){if(!simulationActive)return;const itemCount=Math.floor(Math.random()*4)+1;let items=[];for(let i=0;i<itemCount;i++){const product=products[Math.floor(Math.random()*products.length)];const existing=items.find(item=>item.name===product.name);if(existing)existing.qty++;else items.push({name:product.name,qty:1,price:product.price,icon:product.icon})}const client=clients[Math.floor(Math.random()*clients.length)];const newOrder={id:orderNumber,client:client,items:items,status:"Payée",time:new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})};orders.unshift(newOrder);const total=orderTotal(newOrder);revenue+=total;orderCount++;productCount+=items.reduce((sum,item)=>sum+item.qty,0);if(Math.random()<0.35)customerCount++;updateStats();renderOrders();showNotification(newOrder,total);orderNumber++;updateChart()}
+function showNotification(order,total){const container=document.getElementById("notifications");const notification=document.createElement("div");notification.className="notification";notification.innerHTML=`<div class="notification-title">🔔 Nouvelle commande</div><div class="notification-text">#${order.id} · ${order.items.length} article${order.items.length>1?"s":""}<br><b>${formatPrice(total)}</b></div>`;container.prepend(notification);setTimeout(()=>{notification.style.opacity="0";notification.style.transform="translateY(-10px)";notification.style.transition=".3s";setTimeout(()=>notification.remove(),300)},4000)}
+function updateStats(){document.getElementById("revenue").innerText=formatPrice(revenue);document.getElementById("orderCount").innerText=orderCount;document.getElementById("productCount").innerText=productCount;document.getElementById("customerCount").innerText=customerCount;document.getElementById("average").innerText=formatPrice(revenue/orderCount);document.getElementById("analyticsRevenue").innerText=formatPrice(revenue);document.getElementById("analyticsOrders").innerText=orderCount}
+function formatPrice(value){return value.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"}
+function searchOrders(query){const all=document.getElementById("allOrders");all.innerHTML="";const filtered=orders.filter(order=>order.id.toString().includes(query.trim())||order.client.toLowerCase().includes(query.toLowerCase()));filtered.forEach(order=>all.appendChild(createOrderElement(order)))}
+function setSpeed(time,button){intervalTime=time;document.querySelectorAll(".speed-button").forEach(b=>b.classList.remove("active"));button.classList.add("active");if(simulationActive){clearInterval(timer);startSimulation()}}
+function startSimulation(){clearInterval(timer);timer=setInterval(generateOrder,intervalTime)}
+function toggleSimulation(){simulationActive=!simulationActive;const switchElement=document.getElementById("switch");if(simulationActive){switchElement.style.background="#222";startSimulation()}else{switchElement.style.background="#bbb";clearInterval(timer)}}
+function updateChart(){const bars=document.querySelectorAll(".bar");bars.forEach((bar,index)=>{if(index===bars.length-1)bar.style.height=(30+Math.random()*65)+"%"})}
+updateStats();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
