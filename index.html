@@ -3,1060 +3,1173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velmora</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#ffffff">
-<link rel="apple-touch-icon" href="./icon.svg">
+<title>Velmora Dashboard</title>
+<meta name="theme-color" content="#f7f7f8">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
-body{background:#f7f7f8;color:#171717;padding-bottom:82px}
-.header{height:62px;background:white;border-bottom:1px solid #e7e7e7;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:50}
-.logo{font-size:20px;font-weight:800;letter-spacing:-.5px}
+body{background:#f6f6f7;color:#171717;padding-bottom:85px}
+button{cursor:pointer}
+.header{height:65px;background:#fff;border-bottom:1px solid #e8e8e8;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.logo{font-size:21px;font-weight:850;letter-spacing:1px}
+.logo span{font-weight:400;color:#999}
 .header-right{display:flex;align-items:center;gap:12px}
-.simulation{font-size:9px;font-weight:700;background:#f0f0f0;color:#777;padding:6px 8px;border-radius:6px;letter-spacing:.4px}
-.bell{font-size:20px}
-.main{max-width:850px;margin:auto;padding:22px 17px 30px}
-.page{display:none;animation:pageIn .2s ease}
+.simulation{font-size:9px;font-weight:750;background:#ededed;color:#777;padding:7px 10px;border-radius:6px;letter-spacing:.7px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#36a56a;display:inline-block;margin-right:5px}
+.main{max-width:1050px;margin:auto;padding:25px 17px 35px}
+.page{display:none;animation:fade .2s ease}
 .page.active{display:block}
-@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.title{font-size:28px;font-weight:780;letter-spacing:-.7px}
-.subtitle{color:#777;font-size:13px;margin-top:5px;margin-bottom:20px}
-.revenue-card{background:#171717;color:white;border-radius:18px;padding:21px;margin-bottom:14px}
-.revenue-label{font-size:12px;opacity:.65}
-.revenue{font-size:32px;font-weight:800;margin-top:6px;letter-spacing:-1px}
-.revenue-change{font-size:11px;color:#a9e6bd;margin-top:8px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.card{background:white;border:1px solid #e5e5e5;border-radius:15px;padding:16px}
-.stat-label{font-size:11px;color:#777;margin-bottom:8px}
-.stat-value{font-size:22px;font-weight:760}
-.section{margin-top:24px}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
-.section-title{font-size:17px;font-weight:740}
-.see-all{font-size:12px;font-weight:650;color:#555;cursor:pointer}
-.chart-card{padding:16px 10px 10px}
-.chart{height:170px;display:flex;align-items:flex-end;gap:6px}
-.bar{flex:1;background:#202020;border-radius:5px 5px 2px 2px;min-height:8px;transition:height .4s ease}
-.order{background:white;border:1px solid #e5e5e5;border-radius:14px;padding:15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;cursor:pointer}
-.order-left{display:flex;flex-direction:column;gap:4px}
-.order-id{font-size:14px;font-weight:720}
-.order-info{font-size:11px;color:#777}
-.order-right{text-align:right}
-.order-price{font-size:14px;font-weight:720}
-.order-status{font-size:10px;color:#168544;margin-top:4px;font-weight:650}
-.notifications{position:fixed;top:72px;left:12px;right:12px;z-index:200;pointer-events:none}
-.notification{background:white;border:1px solid #ddd;border-radius:14px;padding:13px 14px;box-shadow:0 8px 28px rgba(0,0,0,.14);margin-bottom:8px;animation:notificationIn .3s ease}
-.notification-title{font-size:13px;font-weight:750}
-.notification-text{font-size:11px;color:#777;margin-top:3px}
-@keyframes notificationIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-.search{background:white;border:1px solid #ddd;border-radius:10px;padding:12px;width:100%;font-size:13px;outline:none;margin-bottom:14px}
-.filters{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px}
-.filter{border:1px solid #ddd;background:white;padding:8px 11px;border-radius:8px;font-size:11px;white-space:nowrap}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.title{font-size:28px;font-weight:800;letter-spacing:-.8px}
+.subtitle{font-size:13px;color:#888;margin-top:5px;margin-bottom:22px}
+.revenue-card{background:#171717;color:#fff;border-radius:20px;padding:23px;margin-bottom:14px;position:relative;overflow:hidden}
+.revenue-card:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #ffffff13;border-radius:50%;right:-55px;top:-95px;box-shadow:0 0 0 25px #ffffff08,0 0 0 50px #ffffff05}
+.revenue-label{font-size:12px;color:#aaa}
+.revenue{font-size:35px;font-weight:850;margin-top:8px;letter-spacing:-1.2px}
+.revenue-change{font-size:11px;color:#9ce2b5;margin-top:9px}
+.revenue-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:19px;padding-top:15px;border-top:1px solid #ffffff20;font-size:10px;color:#aaa}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#fff;border:1px solid #e8e8e8;border-radius:16px;padding:16px;min-width:0}
+.stat-label{font-size:11px;color:#888;margin-bottom:9px}
+.stat-value{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.stat-note{font-size:10px;color:#999;margin-top:6px}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title{font-size:17px;font-weight:780}
+.section-subtitle{font-size:10px;color:#999;margin-top:4px}
+.see-all{font-size:11px;font-weight:700;color:#555}
+.chart-card{padding:17px}
+.chart-wrap{width:100%;height:205px;position:relative}
+canvas{width:100%;height:100%;display:block}
+.chart-legend{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:13px}
+.legend-item{font-size:10px;color:#777;display:flex;align-items:center;gap:6px}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.periods{display:flex;gap:5px;background:#f1f1f1;padding:3px;border-radius:8px}
+.period{border:0;background:transparent;padding:6px 9px;font-size:10px;color:#777;border-radius:6px}
+.period.active{background:#fff;color:#111;font-weight:750;box-shadow:0 1px 3px #00000012}
+.analytics-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.donut-wrap{display:flex;align-items:center;justify-content:center;gap:18px;min-height:190px}
+.donut-canvas{width:155px;height:155px;flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:10px;min-width:0}
+.donut-row{display:flex;align-items:center;gap:7px;font-size:10px;color:#666}
+.donut-row strong{color:#222;margin-left:auto;padding-left:8px}
+.order{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;cursor:pointer;transition:.15s}
+.order:active{transform:scale(.99)}
+.order-left{display:flex;flex-direction:column;gap:5px;min-width:0}
+.order-id{font-size:13px;font-weight:800}
+.order-info{font-size:10px;color:#888}
+.order-right{text-align:right;flex-shrink:0;margin-left:10px}
+.order-price{font-size:13px;font-weight:800}
+.order-status{font-size:9px;color:#18834c;margin-top:5px;font-weight:700}
+.status-preparation{color:#c18a24}
+.status-shipped{color:#527bc3}
+.filters{display:flex;gap:7px;overflow-x:auto;margin-bottom:13px;padding-bottom:3px}
+.filter{border:1px solid #e3e3e3;background:white;padding:8px 12px;border-radius:8px;font-size:10px;white-space:nowrap}
 .filter.active{background:#171717;color:white;border-color:#171717}
-.back{font-size:13px;font-weight:650;margin-bottom:18px;cursor:pointer}
-.detail-card{background:white;border:1px solid #e4e4e4;border-radius:16px;padding:18px;margin-bottom:12px}
-.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.detail-id{font-size:20px;font-weight:780}
-.detail-status{background:#e9f7ed;color:#168544;padding:6px 9px;border-radius:7px;font-size:10px;font-weight:700}
-.item{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #eee;font-size:13px}
-.item:last-child{border-bottom:none}
-.item-name{font-weight:600}
-.item-price{font-weight:650}
-.total{display:flex;justify-content:space-between;margin-top:16px;font-size:18px;font-weight:780}
+.search{background:white;border:1px solid #e3e3e3;border-radius:10px;padding:12px;width:100%;font-size:12px;outline:none;margin-bottom:13px}
 .product{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #eee}
 .product:last-child{border-bottom:none}
-.product-icon{width:46px;height:46px;border-radius:11px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:21px}
-.product-name{font-size:13px;font-weight:680}
-.product-price{font-size:11px;color:#777;margin-top:3px}
-.setting{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #eee}
+.product-icon{width:45px;height:45px;border-radius:12px;background:#f3f3f3;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+.product-info{flex:1;min-width:0}
+.product-name{font-size:12px;font-weight:750}
+.product-price{font-size:10px;color:#888;margin-top:4px}
+.product-sold{text-align:right;font-size:11px;font-weight:750}
+.product-sold small{display:block;font-size:9px;color:#999;font-weight:400;margin-top:4px}
+.detail-card{background:#fff;border:1px solid #e7e7e7;border-radius:16px;padding:17px;margin-bottom:12px}
+.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.detail-id{font-size:19px;font-weight:800}
+.detail-status{background:#e9f7ed;color:#168544;padding:6px 9px;border-radius:7px;font-size:10px;font-weight:750}
+.item{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #eee;font-size:12px}
+.item:last-child{border-bottom:none}
+.item-name{font-weight:650}
+.item-price{font-weight:750}
+.total{display:flex;justify-content:space-between;margin-top:15px;font-size:17px;font-weight:800}
+.back{font-size:12px;font-weight:700;margin-bottom:18px;cursor:pointer}
+.setting{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #eee;gap:10px}
 .setting:last-child{border-bottom:none}
-.setting-name{font-size:13px;font-weight:650}
-.setting-description{font-size:10px;color:#888;margin-top:3px}
-.switch{width:42px;height:24px;background:#222;border-radius:20px;position:relative;cursor:pointer}
-.switch::after{content:"";position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;right:3px}
+.setting-name{font-size:12px;font-weight:700}
+.setting-description{font-size:10px;color:#888;margin-top:4px}
+.switch{width:43px;height:25px;background:#222;border-radius:20px;position:relative;flex-shrink:0;cursor:pointer}
+.switch:after{content:"";position:absolute;width:19px;height:19px;background:white;border-radius:50%;top:3px;right:3px;transition:.2s}
+.switch.off{background:#bbb}
+.switch.off:after{right:21px}
 .speed-buttons{display:flex;gap:7px;margin-top:10px}
-.speed-button{flex:1;border:1px solid #ddd;background:white;padding:9px 4px;border-radius:8px;font-size:10px}
+.speed-button{flex:1;border:1px solid #ddd;background:white;padding:10px 4px;border-radius:8px;font-size:10px}
 .speed-button.active{background:#171717;color:white}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:rgba(255,255,255,.97);backdrop-filter:blur(15px);border-top:1px solid #ddd;display:flex;justify-content:space-around;align-items:center;z-index:100}
-.nav-item{text-align:center;font-size:9px;color:#777;cursor:pointer;min-width:60px}
-.nav-icon{font-size:20px;display:block;margin-bottom:3px}
-.nav-item.active{color:#111;font-weight:700}
-@media(min-width:800px){.main{padding:35px 25px}.stats{grid-template-columns:repeat(4,1fr)}.notifications{left:auto;width:350px}.bottom-nav{left:50%;transform:translateX(-50%);width:600px;border:1px solid #ddd;border-radius:18px 18px 0 0}}
+.notification{position:fixed;top:75px;left:12px;right:12px;z-index:200;background:#fff;border:1px solid #ddd;border-radius:13px;padding:13px;box-shadow:0 8px 30px #0002;animation:fade .25s}
+.notification-title{font-size:12px;font-weight:800}
+.notification-text{font-size:10px;color:#888;margin-top:4px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:#ffffffed;backdrop-filter:blur(15px);border-top:1px solid #e5e5e5;display:flex;justify-content:space-around;align-items:center;z-index:100}
+.nav-item{text-align:center;font-size:9px;color:#999;cursor:pointer;min-width:55px}
+.nav-icon{font-size:19px;display:block;margin-bottom:4px}
+.nav-item.active{color:#111;font-weight:800}
+.empty{text-align:center;color:#999;font-size:12px;padding:30px 10px}
+.small-badge{font-size:9px;background:#f1f1f1;padding:5px 7px;border-radius:6px;color:#777}
+.two-col{display:grid;grid-template-columns:1fr;gap:12px}
+.metric-line{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #eee;font-size:11px}
+.metric-line:last-child{border:0}
+.metric-line strong{font-size:12px}
+@media(min-width:700px){
+.main{padding:35px 25px}
+.stats{grid-template-columns:repeat(4,1fr)}
+.analytics-grid{grid-template-columns:1.3fr 1fr}
+.two-col{grid-template-columns:1fr 1fr}
+.notification{left:auto;width:330px}
+.bottom-nav{left:50%;transform:translateX(-50%);width:620px;border:1px solid #ddd;border-radius:18px 18px 0 0}
+}
 </style>
 </head>
 
 <body>
 
 <header class="header">
-<div class="logo">VELMORA</div>
-<div class="header-right">
-<div class="simulation">SIMULATION</div>
-<div class="bell">🔔</div>
-</div>
+  <div class="logo">VELMORA<span>.</span></div>
+  <div class="header-right">
+    <div class="simulation"><span class="live-dot"></span>SIMULATION</div>
+  </div>
 </header>
 
-<div class="notifications" id="notifications"></div>
+<div id="notificationArea"></div>
 
 <main class="main">
 
 <section class="page active" id="home">
-<h1 class="title">Accueil</h1>
-<p class="subtitle">Vue d'ensemble de votre boutique</p>
+  <h1 class="title">Accueil</h1>
+  <p class="subtitle">Vue d'ensemble de votre boutique</p>
 
-<div class="revenue-card">
-<div class="revenue-label">Chiffre d'affaires</div>
-<div class="revenue" id="revenue">2 486,40 €</div>
-<div class="revenue-change">↑ 12,4 % aujourd'hui</div>
-</div>
+  <div class="revenue-card">
+    <div class="revenue-label">Chiffre d'affaires total</div>
+    <div class="revenue" id="revenue">0 €</div>
+    <div class="revenue-change">↗ Activité de la boutique</div>
+    <div class="revenue-bottom">
+      <span>Depuis le 30 octobre 2026</span>
+      <span id="todayRevenue">Aujourd'hui : 0 €</span>
+    </div>
+  </div>
 
-<div class="stats">
-<div class="card"><div class="stat-label">Commandes</div><div class="stat-value" id="orderCount">42</div></div>
-<div class="card"><div class="stat-label">Articles vendus</div><div class="stat-value" id="productCount">63</div></div>
-<div class="card"><div class="stat-label">Panier moyen</div><div class="stat-value" id="average">59,20 €</div></div>
-<div class="card"><div class="stat-label">Clients</div><div class="stat-value" id="customerCount">38</div></div>
-</div>
+  <div class="stats">
+    <div class="card">
+      <div class="stat-label">Commandes</div>
+      <div class="stat-value" id="orderCount">0</div>
+      <div class="stat-note">Commandes enregistrées</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Articles vendus</div>
+      <div class="stat-value" id="productCount">0</div>
+      <div class="stat-note">Toutes références</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Panier moyen</div>
+      <div class="stat-value" id="average">0 €</div>
+      <div class="stat-note">Par commande</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Clients</div>
+      <div class="stat-value" id="customerCount">0</div>
+      <div class="stat-note">Clients différents</div>
+    </div>
+  </div>
 
-<div class="section">
-<div class="section-head">
-<div class="section-title">Ventes</div>
-<div class="see-all">Aujourd'hui</div>
-</div>
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Évolution des ventes</div>
+        <div class="section-subtitle">Chiffre d'affaires au fil du temps</div>
+      </div>
+      <div class="periods">
+        <button class="period active" onclick="setPeriod(7,this)">7 jours</button>
+        <button class="period" onclick="setPeriod(30,this)">30 jours</button>
+      </div>
+    </div>
+    <div class="card chart-card">
+      <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+    </div>
+  </div>
 
-<div class="card chart-card">
-<div class="chart" id="chart">
-<div class="bar" style="height:28%"></div>
-<div class="bar" style="height:42%"></div>
-<div class="bar" style="height:36%"></div>
-<div class="bar" style="height:55%"></div>
-<div class="bar" style="height:48%"></div>
-<div class="bar" style="height:69%"></div>
-<div class="bar" style="height:85%"></div>
-</div>
-</div>
-</div>
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Répartition des ventes</div>
+        <div class="section-subtitle">Les produits les plus populaires</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="donut-wrap">
+        <canvas id="donutChart" class="donut-canvas"></canvas>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
+  </div>
 
-<div class="section">
-<div class="section-head">
-<div class="section-title">Commandes récentes</div>
-<div class="see-all" onclick="openPage('orders')">Voir tout</div>
-</div>
-<div id="recentOrders"></div>
-</div>
-
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Commandes récentes</div>
+      <div class="see-all" onclick="openPage('orders')">Voir tout →</div>
+    </div>
+    <div id="recentOrders"></div>
+  </div>
 </section>
 
 <section class="page" id="orders">
-<h1 class="title">Commandes</h1>
-<p class="subtitle">Historique des commandes fictives</p>
-<input class="search" placeholder="🔎 Rechercher une commande..." oninput="searchOrders(this.value)">
-
-<div class="filters">
-<div class="filter active">Toutes</div>
-<div class="filter">Payées</div>
-<div class="filter">Préparation</div>
-<div class="filter">Expédiées</div>
-</div>
-
-<div id="allOrders"></div>
+  <h1 class="title">Commandes</h1>
+  <p class="subtitle">Historique complet de votre boutique</p>
+  <input class="search" id="orderSearch" placeholder="⌕ Rechercher un numéro ou un client..." oninput="renderOrders()">
+  <div class="filters">
+    <button class="filter active" onclick="setFilter('Toutes',this)">Toutes</button>
+    <button class="filter" onclick="setFilter('Payée',this)">Payées</button>
+    <button class="filter" onclick="setFilter('Préparation',this)">Préparation</button>
+    <button class="filter" onclick="setFilter('Expédiée',this)">Expédiées</button>
+  </div>
+  <div id="allOrders"></div>
 </section>
 
 <section class="page" id="orderDetail">
-<div class="back" onclick="openPage('orders')">← Retour aux commandes</div>
-<div id="detailContent"></div>
+  <div class="back" onclick="openPage('orders')">← Retour aux commandes</div>
+  <div id="detailContent"></div>
 </section>
 
 <section class="page" id="products">
-<h1 class="title">Produits</h1>
-<p class="subtitle">Catalogue de la boutique</p>
-
-<div class="card">
-
-<div class="product">
-<div class="product-icon">⌚</div>
-<div>
-<div class="product-name">Montre Velmora</div>
-<div class="product-price">59,90 € · 21 vendues</div>
-</div>
-</div>
-
-<div class="product">
-<div class="product-icon">👜</div>
-<div>
-<div class="product-name">Sac Velmora</div>
-<div class="product-price">49,90 € · 18 vendus</div>
-</div>
-</div>
-
-<div class="product">
-<div class="product-icon">💎</div>
-<div>
-<div class="product-name">Bracelet Velmora</div>
-<div class="product-price">39,90 € · 14 vendus</div>
-</div>
-</div>
-
-<div class="product">
-<div class="product-icon">📿</div>
-<div>
-<div class="product-name">Collier Velmora</div>
-<div class="product-price">44,90 € · 10 vendus</div>
-</div>
-</div>
-
-<div class="product">
-<div class="product-icon">👛</div>
-<div>
-<div class="product-name">Portefeuille Velmora</div>
-<div class="product-price">34,90 € · 8 vendus</div>
-</div>
-</div>
-
-</div>
+  <h1 class="title">Produits</h1>
+  <p class="subtitle">Catalogue et performances des références</p>
+  <div class="stats" style="margin-bottom:14px">
+    <div class="card">
+      <div class="stat-label">Références</div>
+      <div class="stat-value" id="catalogCount">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Articles vendus</div>
+      <div class="stat-value" id="catalogSold">0</div>
+    </div>
+  </div>
+  <div class="card" id="productList"></div>
 </section>
 
 <section class="page" id="analytics">
-<h1 class="title">Analytics</h1>
-<p class="subtitle">Performances de la simulation</p>
+  <h1 class="title">Analytics</h1>
+  <p class="subtitle">Analyse détaillée des performances</p>
 
-<div class="stats">
-<div class="card"><div class="stat-label">CA</div><div class="stat-value" id="analyticsRevenue">2 486 €</div></div>
-<div class="card"><div class="stat-label">Commandes</div><div class="stat-value" id="analyticsOrders">42</div></div>
-<div class="card"><div class="stat-label">Conversion</div><div class="stat-value">3,8 %</div></div>
-<div class="card"><div class="stat-label">Visiteurs</div><div class="stat-value">1 248</div></div>
-</div>
+  <div class="stats">
+    <div class="card">
+      <div class="stat-label">Chiffre d'affaires</div>
+      <div class="stat-value" id="analyticsRevenue">0 €</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Bénéfice estimé</div>
+      <div class="stat-value" id="estimatedProfit">0 €</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Panier moyen</div>
+      <div class="stat-value" id="analyticsAverage">0 €</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Taux de retour</div>
+      <div class="stat-value">0 %</div>
+    </div>
+  </div>
+
+  <div class="section analytics-grid">
+    <div>
+      <div class="section-head">
+        <div class="section-title">Courbe du chiffre d'affaires</div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-wrap"><canvas id="analyticsChart"></canvas></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head">
+        <div class="section-title">Top produits</div>
+      </div>
+      <div class="card" id="topProducts"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Résumé de l'activité</div>
+    </div>
+    <div class="card">
+      <div class="metric-line"><span>Commandes totales</span><strong id="metricOrders">0</strong></div>
+      <div class="metric-line"><span>Clients uniques</span><strong id="metricCustomers">0</strong></div>
+      <div class="metric-line"><span>Articles vendus</span><strong id="metricItems">0</strong></div>
+      <div class="metric-line"><span>Montant moyen par article</span><strong id="metricItemAverage">0 €</strong></div>
+      <div class="metric-line"><span>Commande la plus élevée</span><strong id="metricHighest">0 €</strong></div>
+      <div class="metric-line"><span>Produit le plus vendu</span><strong id="metricBest">-</strong></div>
+    </div>
+  </div>
 </section>
 
 <section class="page" id="settings">
-<h1 class="title">Paramètres</h1>
-<p class="subtitle">Configuration de la simulation</p>
+  <h1 class="title">Paramètres</h1>
+  <p class="subtitle">Configuration de votre simulation</p>
 
-<div class="card">
+  <div class="card">
+    <div class="setting">
+      <div>
+        <div class="setting-name">Simulation automatique</div>
+        <div class="setting-description">Générer des commandes automatiquement</div>
+      </div>
+      <div class="switch" id="switch" onclick="toggleSimulation()"></div>
+    </div>
 
-<div class="setting">
-<div>
-<div class="setting-name">Notifications</div>
-<div class="setting-description">Recevoir les nouvelles commandes sur cet appareil</div>
-</div>
+    <div class="setting">
+      <div>
+        <div class="setting-name">Vitesse de simulation</div>
+        <div class="setting-description">Fréquence des nouvelles commandes</div>
+      </div>
+    </div>
 
-<button
-class="speed-button"
-style="flex:0 0 auto;padding:8px 10px"
-onclick="enablePushNotifications()"
-id="pushButton">
-Activer
-</button>
-</div>
+    <div class="speed-buttons">
+      <button class="speed-button" onclick="setSpeed(30000,this)">Lente</button>
+      <button class="speed-button active" onclick="setSpeed(12000,this)">Normale</button>
+      <button class="speed-button" onclick="setSpeed(5000,this)">Rapide</button>
+    </div>
 
-<div class="setting">
-<div>
-<div class="setting-name">Simulation automatique</div>
-<div class="setting-description">Générer des commandes automatiquement</div>
-</div>
+    <div class="setting" style="margin-top:12px">
+      <div>
+        <div class="setting-name">Commandes hors ligne</div>
+        <div class="setting-description">Une commande fictive toutes les 10 minutes de fermeture</div>
+      </div>
+      <span class="small-badge">Activé</span>
+    </div>
 
-<div class="switch" onclick="toggleSimulation()" id="switch"></div>
-</div>
+    <div class="setting">
+      <div>
+        <div class="setting-name">Sauvegarde automatique</div>
+        <div class="setting-description">Les données sont conservées sur cet appareil</div>
+      </div>
+      <span class="small-badge">Activée</span>
+    </div>
 
-<div class="setting">
-<div>
-<div class="setting-name">Vitesse</div>
-<div class="setting-description">Fréquence des nouvelles commandes</div>
-</div>
-</div>
+    <div class="setting">
+      <div>
+        <div class="setting-name">Données de simulation</div>
+        <div class="setting-description">Toutes les commandes et sommes sont fictives</div>
+      </div>
+      <span>🟢</span>
+    </div>
+  </div>
 
-<div class="speed-buttons">
-<button class="speed-button" onclick="setSpeed(30000,this)">Lente</button>
-<button class="speed-button active" onclick="setSpeed(12000,this)">Normale</button>
-<button class="speed-button" onclick="setSpeed(5000,this)">Rapide</button>
-</div>
-
-<div class="setting" style="margin-top:10px">
-<div>
-<div class="setting-name">Mode simulation</div>
-<div class="setting-description">Toutes les données affichées sont fictives</div>
-</div>
-<div>🟢</div>
-</div>
-
-</div>
+  <div class="section">
+    <div class="section-title" style="margin-bottom:10px">Informations</div>
+    <div class="card">
+      <div class="metric-line"><span>Version</span><strong>Velmora V7</strong></div>
+      <div class="metric-line"><span>Début de l'historique</span><strong>30 octobre 2026</strong></div>
+      <div class="metric-line"><span>Dernière sauvegarde</span><strong id="lastSave">-</strong></div>
+    </div>
+  </div>
 </section>
 
 </main>
 
 <nav class="bottom-nav">
-
-<div class="nav-item active" onclick="openPage('home',this)">
-<span class="nav-icon">⌂</span>Accueil
-</div>
-
-<div class="nav-item" onclick="openPage('orders',this)">
-<span class="nav-icon">🛒</span>Commandes
-</div>
-
-<div class="nav-item" onclick="openPage('products',this)">
-<span class="nav-icon">📦</span>Produits
-</div>
-
-<div class="nav-item" onclick="openPage('analytics',this)">
-<span class="nav-icon">📊</span>Analytics
-</div>
-
-<div class="nav-item" onclick="openPage('settings',this)">
-<span class="nav-icon">☰</span>Plus
-</div>
-
+  <div class="nav-item active" onclick="openPage('home',this)"><span class="nav-icon">⌂</span>Accueil</div>
+  <div class="nav-item" onclick="openPage('orders',this)"><span class="nav-icon">🛒</span>Commandes</div>
+  <div class="nav-item" onclick="openPage('products',this)"><span class="nav-icon">📦</span>Produits</div>
+  <div class="nav-item" onclick="openPage('analytics',this)"><span class="nav-icon">◔</span>Analytics</div>
+  <div class="nav-item" onclick="openPage('settings',this)"><span class="nav-icon">☰</span>Plus</div>
 </nav>
 
 <script>
+"use strict";
 
-let revenue=2486.40,
-orderNumber=1048,
-orderCount=42,
-productCount=63,
-customerCount=38,
-simulationActive=true,
-intervalTime=12000,
-timer;
+/* =========================================
+   VELMORA V7
+   Sauvegarde locale + historique + analytics
+========================================= */
 
-const products=[
-{name:"Montre Velmora",price:59.90,icon:"⌚"},
-{name:"Sac Velmora",price:49.90,icon:"👜"},
-{name:"Bracelet Velmora",price:39.90,icon:"💎"},
-{name:"Collier Velmora",price:44.90,icon:"📿"},
-{name:"Portefeuille Velmora",price:34.90,icon:"👛"}
+const STORAGE_KEY = "velmora_v7_database";
+const OFFLINE_INTERVAL = 10 * 60 * 1000;
+const START_DATE = new Date(2026, 9, 30, 0, 0, 0);
+
+const products = [
+  {id:"M01",name:"Montre Velmora Classic",price:59.90,icon:"⌚",category:"Montre"},
+  {id:"M02",name:"Montre Velmora Gold",price:69.90,icon:"⌚",category:"Montre"},
+  {id:"M03",name:"Montre Velmora Silver",price:54.90,icon:"⌚",category:"Montre"},
+  {id:"M04",name:"Montre Velmora Minimal",price:49.90,icon:"⌚",category:"Montre"},
+  {id:"S01",name:"Sac Velmora Élégance",price:59.90,icon:"👜",category:"Sac"},
+  {id:"S02",name:"Sac Velmora Mini",price:44.90,icon:"👜",category:"Sac"},
+  {id:"S03",name:"Sac Velmora City",price:64.90,icon:"👜",category:"Sac"},
+  {id:"S04",name:"Sac Velmora Classic",price:54.90,icon:"👜",category:"Sac"},
+  {id:"S05",name:"Sac Velmora Shoulder",price:49.90,icon:"👜",category:"Sac"},
+  {id:"B01",name:"Bracelet Velmora Gold",price:29.90,icon:"💎",category:"Bracelet"},
+  {id:"B02",name:"Bracelet Velmora Silver",price:24.90,icon:"✨",category:"Bracelet"},
+  {id:"B03",name:"Bracelet Velmora Élégance",price:34.90,icon:"💎",category:"Bracelet"},
+  {id:"B04",name:"Bracelet Velmora Pearl",price:32.90,icon:"🤍",category:"Bracelet"},
+  {id:"P01",name:"Portefeuille Velmora",price:34.90,icon:"👛",category:"Accessoire"},
+  {id:"P02",name:"Porte-cartes Velmora",price:27.90,icon:"💳",category:"Accessoire"},
+  {id:"A01",name:"Lunettes Velmora",price:39.90,icon:"🕶️",category:"Accessoire"},
+  {id:"A02",name:"Ceinture Velmora",price:36.90,icon:"🟤",category:"Accessoire"},
+  {id:"A03",name:"Pochette Velmora",price:29.90,icon:"👝",category:"Accessoire"}
 ];
 
-const clients=[
-"Emma Bernard",
-"Lucas Martin",
-"Sarah Morel",
-"Thomas Robert",
-"Chloé Petit",
-"Nathan Garcia",
-"Jules Laurent",
-"Léa Robert",
-"Alexandre Simon",
-"Camille Michel"
+const firstNames = [
+"Emma","Lucas","Léa","Nathan","Chloé","Hugo","Manon","Louis","Jade","Gabriel",
+"Camille","Enzo","Sarah","Noah","Inès","Théo","Lina","Adam","Zoé","Mathis",
+"Clara","Ethan","Juliette","Tom","Louise","Raphaël","Alice","Arthur","Mila","Paul",
+"Jeanne","Sacha","Rose","Axel","Anna","Léo","Eva","Maxime","Ambre","Jules",
+"Maëlys","Noémie","Evan","Lola","Mathéo","Romane","Antoine","Elisa","Marius","Léna",
+"Yanis","Maya","Nina","Victor","Margot","Ilyes","Lucie","Bastien","Elena","Nolan",
+"Amélie","Rayan","Océane","Timéo","Mélissa","Adrien","Anaïs","Samuel","Louna","Martin",
+"Yasmine","Baptiste","Charlotte","Alexis","Mélanie","Célia","Dylan","Alicia","Gabin","Sofia"
 ];
 
-let orders=[
-{
-id:1047,
-client:"Emma Bernard",
-items:[
-{name:"Montre Velmora",qty:1,price:59.90,icon:"⌚"},
-{name:"Bracelet Velmora",qty:1,price:39.90,icon:"💎"}
-],
-status:"Payée",
-time:"12:48"
-},
-{
-id:1046,
-client:"Lucas Martin",
-items:[
-{name:"Sac Velmora",qty:1,price:49.90,icon:"👜"}
-],
-status:"Expédiée",
-time:"12:42"
-},
-{
-id:1045,
-client:"Sarah Morel",
-items:[
-{name:"Montre Velmora",qty:1,price:59.90,icon:"⌚"},
-{name:"Collier Velmora",qty:1,price:44.90,icon:"📿"},
-{name:"Bracelet Velmora",qty:1,price:39.90,icon:"💎"}
-],
-status:"Préparation",
-time:"12:36"
-}
+const lastNames = [
+"Martin","Bernard","Thomas","Petit","Robert","Richard","Durand","Dubois","Moreau","Laurent",
+"Simon","Michel","Lefebvre","Leroy","Roux","David","Bertrand","Morel","Fournier","Girard",
+"Bonnet","Dupont","Lambert","Fontaine","Rousseau","Vincent","Muller","Lefevre","Faure","Andre",
+"Mercier","Blanc","Guerin","Boyer","Garnier","Chevalier","Francois","Legrand","Gauthier","Garcia",
+"Robin","Clement","Morin","Nicolas","Henry","Roussel","Mathieu","Gautier","Masson","Marchand",
+"Duval","Denis","Dumont","Marie","Lemaire","Noel","Meyer","Dufour","Meunier","Brun",
+"Blanchard","Giraud","Joly","Roche","Roy","Picard","Roger","Colin","Vidal","Caron",
+"Fabre","Aubert","Renard","Schmitt","Barbier","Arnaud","Benoit","Perrin","Bourgeois","Rolland"
 ];
 
-renderOrders();
-startSimulation();
+const statuses = ["Payée","Payée","Payée","Préparation","Expédiée"];
 
-function openPage(page,element){
+let state = null;
+let timer = null;
+let intervalTime = 12000;
+let currentFilter = "Toutes";
+let chartPeriod = 7;
 
-document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
-
-const target=document.getElementById(page);
-
-if(target)
-target.classList.add("active");
-
-document.querySelectorAll(".nav-item")
-.forEach(n=>n.classList.remove("active"));
-
-if(element){
-
-element.classList.add("active");
-
-}else{
-
-document.querySelectorAll(".nav-item")
-.forEach(item=>{
-
-if(
-item.getAttribute("onclick") &&
-item.getAttribute("onclick").includes(page)
-)
-item.classList.add("active");
-
-});
-
+function random(min,max){
+  return Math.random()*(max-min)+min;
 }
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-function orderTotal(order){
-
-return order.items.reduce(
-(sum,item)=>sum+(item.price*item.qty),
-0
-);
-
-}
-
-function renderOrders(){
-
-const recent=document.getElementById("recentOrders");
-
-recent.innerHTML="";
-
-orders.slice(0,5)
-.forEach(order=>
-recent.appendChild(
-createOrderElement(order)
-)
-);
-
-const all=document.getElementById("allOrders");
-
-all.innerHTML="";
-
-orders.forEach(order=>
-all.appendChild(
-createOrderElement(order)
-)
-);
-
-}
-
-function createOrderElement(order){
-
-const element=document.createElement("div");
-
-element.className="order";
-
-const total=orderTotal(order);
-
-const itemCount=order.items.reduce(
-(sum,item)=>sum+item.qty,
-0
-);
-
-element.innerHTML=`
-
-<div class="order-left">
-
-<div class="order-id">
-#${order.id}
-</div>
-
-<div class="order-info">
-${itemCount} article${itemCount>1?"s":""} · ${order.client}
-</div>
-
-<div class="order-info">
-${order.time}
-</div>
-
-</div>
-
-<div class="order-right">
-
-<div class="order-price">
-${formatPrice(total)}
-</div>
-
-<div class="order-status">
-${order.status}
-</div>
-
-</div>
-`;
-
-element.onclick=()=>{
-showOrderDetail(order);
-};
-
-return element;
-
-}
-
-function showOrderDetail(order){
-
-const content=document.getElementById("detailContent");
-
-const total=orderTotal(order);
-
-let itemsHTML="";
-
-order.items.forEach(item=>{
-
-itemsHTML+=`
-
-<div class="item">
-
-<div>
-
-<div class="item-name">
-${item.icon} ${item.name}
-</div>
-
-<div style="font-size:10px;color:#888;margin-top:3px">
-Quantité : ${item.qty}
-</div>
-
-</div>
-
-<div class="item-price">
-${formatPrice(item.price*item.qty)}
-</div>
-
-</div>
-
-`;
-
-});
-
-content.innerHTML=`
-
-<div class="detail-card">
-
-<div class="detail-header">
-
-<div class="detail-id">
-Commande #${order.id}
-</div>
-
-<div class="detail-status">
-${order.status}
-</div>
-
-</div>
-
-<div style="font-size:12px;color:#777">
-${order.client}
-</div>
-
-<div style="font-size:11px;color:#999;margin-top:4px">
-Aujourd'hui à ${order.time}
-</div>
-
-</div>
-
-<div class="detail-card">
-
-<div style="font-size:14px;font-weight:700;margin-bottom:3px">
-Articles
-</div>
-
-${itemsHTML}
-
-<div class="total">
-
-<span>Total</span>
-
-<span>
-${formatPrice(total)}
-</span>
-
-</div>
-
-</div>
-`;
-
-openPage("orderDetail");
-
-}
-
-function generateOrder(){
-
-if(!simulationActive)
-return;
-
-const itemCount=Math.floor(Math.random()*4)+1;
-
-let items=[];
-
-for(let i=0;i<itemCount;i++){
-
-const product=
-products[
-Math.floor(
-Math.random()*products.length
-)
-];
-
-const existing=
-items.find(
-item=>item.name===product.name
-);
-
-if(existing){
-
-existing.qty++;
-
-}else{
-
-items.push({
-name:product.name,
-qty:1,
-price:product.price,
-icon:product.icon
-});
-
-}
-
-}
-
-const client=
-clients[
-Math.floor(
-Math.random()*clients.length
-)
-];
-
-const newOrder={
-id:orderNumber,
-client:client,
-items:items,
-status:"Payée",
-time:new Date().toLocaleTimeString(
-"fr-FR",
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-)
-};
-
-orders.unshift(newOrder);
-
-const total=orderTotal(newOrder);
-
-revenue+=total;
-
-orderCount++;
-
-productCount+=items.reduce(
-(sum,item)=>sum+item.qty,
-0
-);
-
-if(Math.random()<0.35)
-customerCount++;
-
-updateStats();
-
-renderOrders();
-
-showNotification(
-newOrder,
-total
-);
-
-orderNumber++;
-
-updateChart();
-
-}
-
-function showNotification(order,total){
-
-const container=
-document.getElementById("notifications");
-
-const notification=
-document.createElement("div");
-
-notification.className="notification";
-
-notification.innerHTML=`
-
-<div class="notification-title">
-🔔 Nouvelle commande
-</div>
-
-<div class="notification-text">
-
-#${order.id} ·
-${order.items.length}
-article${order.items.length>1?"s":""}
-
-<br>
-
-<b>${formatPrice(total)}</b>
-
-</div>
-
-`;
-
-container.prepend(notification);
-
-setTimeout(()=>{
-
-notification.style.opacity="0";
-
-notification.style.transform=
-"translateY(-10px)";
-
-notification.style.transition=".3s";
-
-setTimeout(
-()=>notification.remove(),
-300
-);
-
-},4000);
-
-}
-
-function updateStats(){
-
-document.getElementById("revenue")
-.innerText=formatPrice(revenue);
-
-document.getElementById("orderCount")
-.innerText=orderCount;
-
-document.getElementById("productCount")
-.innerText=productCount;
-
-document.getElementById("customerCount")
-.innerText=customerCount;
-
-document.getElementById("average")
-.innerText=
-formatPrice(
-revenue/orderCount
-);
-
-document.getElementById("analyticsRevenue")
-.innerText=
-formatPrice(revenue);
-
-document.getElementById("analyticsOrders")
-.innerText=
-orderCount;
-
+function pick(array){
+  return array[Math.floor(Math.random()*array.length)];
 }
 
 function formatPrice(value){
-
-return value.toLocaleString(
-"fr-FR",
-{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}
-)+" €";
-
+  return Number(value || 0).toLocaleString("fr-FR",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  })+" €";
 }
 
-function searchOrders(query){
-
-const all=
-document.getElementById("allOrders");
-
-all.innerHTML="";
-
-const filtered=
-orders.filter(order=>
-order.id.toString()
-.includes(query.trim()) ||
-order.client
-.toLowerCase()
-.includes(query.toLowerCase())
-);
-
-filtered.forEach(order=>
-all.appendChild(
-createOrderElement(order)
-)
-);
-
+function formatDate(date){
+  return new Date(date).toLocaleDateString("fr-FR",{
+    day:"2-digit",month:"short",year:"numeric"
+  });
 }
 
-function setSpeed(time,button){
-
-intervalTime=time;
-
-document.querySelectorAll(".speed-button")
-.forEach(b=>
-b.classList.remove("active")
-);
-
-button.classList.add("active");
-
-if(simulationActive){
-
-clearInterval(timer);
-
-startSimulation();
-
+function formatTime(date){
+  return new Date(date).toLocaleTimeString("fr-FR",{
+    hour:"2-digit",minute:"2-digit"
+  });
 }
 
+function getUniqueName(){
+  const used = new Set(state.usedNames || []);
+  const available = [];
+
+  for(const first of firstNames){
+    for(const last of lastNames){
+      const full = first+" "+last;
+      if(!used.has(full)) available.push(full);
+    }
+  }
+
+  if(available.length===0){
+    const extra = "Client "+(used.size+1);
+    state.usedNames.push(extra);
+    return extra;
+  }
+
+  const name = pick(available);
+  state.usedNames.push(name);
+  return name;
+}
+
+function makeItems(){
+  const first = pick(products);
+  let selected = [first];
+
+  const possible = products.filter(p =>
+    p.id!==first.id && p.price+first.price<=100
+  );
+
+  if(possible.length && Math.random()<0.45){
+    selected.push(pick(possible));
+  }
+
+  return selected.map(p=>({
+    id:p.id,
+    name:p.name,
+    price:p.price,
+    icon:p.icon,
+    qty:1
+  }));
+}
+
+function totalOrder(order){
+  return order.items.reduce((sum,item)=>sum+item.price*item.qty,0);
+}
+
+function createOrder(date = new Date()){
+  const items = makeItems();
+
+  return {
+    id:state.nextOrderId++,
+    client:getUniqueName(),
+    items,
+    status:pick(statuses),
+    createdAt:new Date(date).toISOString()
+  };
+}
+
+function seedHistory(){
+  const seeded = [];
+  const start = new Date(2026,9,30,8,0,0).getTime();
+  const end = new Date(2026,10,5,13,0,0).getTime();
+
+  state = {
+    orders:[],
+    usedNames:[],
+    nextOrderId:1048,
+    simulationActive:true,
+    intervalTime:12000,
+    lastSeen:Date.now(),
+    createdAt:Date.now()
+  };
+
+  for(let i=0;i<42;i++){
+    const timestamp = start + (end-start)*(i/41) + random(-35,35)*60000;
+    const date = new Date(timestamp);
+    const order = createOrder(date);
+    seeded.push(order);
+  }
+
+  seeded.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  state.orders=seeded;
+  saveState();
+}
+
+function loadState(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+
+    if(!saved){
+      seedHistory();
+      return;
+    }
+
+    const parsed=JSON.parse(saved);
+
+    if(!parsed || !Array.isArray(parsed.orders)){
+      seedHistory();
+      return;
+    }
+
+    state=parsed;
+    state.usedNames=state.usedNames || [];
+    state.nextOrderId=state.nextOrderId || 1048;
+    state.simulationActive=state.simulationActive!==false;
+    state.intervalTime=state.intervalTime || 12000;
+    state.lastSeen=state.lastSeen || Date.now();
+
+    const known = new Set(state.usedNames);
+    state.orders.forEach(order=>{
+      if(order.client) known.add(order.client);
+    });
+    state.usedNames=[...known];
+
+  }catch(error){
+    console.error("Erreur de sauvegarde",error);
+    seedHistory();
+  }
+}
+
+function saveState(){
+  if(!state) return;
+  state.lastSeen=Date.now();
+
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    const el=document.getElementById("lastSave");
+    if(el) el.textContent=formatTime(new Date());
+  }catch(error){
+    console.error("Impossible de sauvegarder",error);
+  }
+}
+
+function addOrder(date = new Date(),showToast = true){
+  if(!state.simulationActive) return;
+
+  const order=createOrder(date);
+  state.orders.unshift(order);
+  saveState();
+  updateDashboard();
+
+  if(showToast) showNotification(order);
+}
+
+function catchUpOffline(){
+  if(!state.simulationActive) return;
+
+  const now=Date.now();
+  const elapsed=Math.max(0,now-(state.lastSeen || now));
+  const count=Math.min(500,Math.floor(elapsed/OFFLINE_INTERVAL));
+
+  if(count>0){
+    for(let i=0;i<count;i++){
+      const date=new Date(now-(count-i-1)*OFFLINE_INTERVAL);
+      const order=createOrder(date);
+      state.orders.unshift(order);
+    }
+  }
+
+  state.lastSeen=now;
+  saveState();
 }
 
 function startSimulation(){
+  clearInterval(timer);
 
-clearInterval(timer);
+  if(!state.simulationActive) return;
 
-timer=setInterval(
-generateOrder,
-intervalTime
-);
+  timer=setInterval(()=>{
+    addOrder(new Date(),true);
+  },state.intervalTime);
+}
 
+function updateDashboard(){
+  const orders=state.orders;
+  const revenue=orders.reduce((sum,o)=>sum+totalOrder(o),0);
+  const itemCount=orders.reduce((sum,o)=>
+    sum+o.items.reduce((n,i)=>n+i.qty,0),0);
+  const customers=new Set(orders.map(o=>o.client)).size;
+  const average=orders.length?revenue/orders.length:0;
+  const today=new Date().toDateString();
+  const todayRevenue=orders.filter(o=>
+    new Date(o.createdAt).toDateString()===today
+  ).reduce((sum,o)=>sum+totalOrder(o),0);
+
+  setText("revenue",formatPrice(revenue));
+  setText("orderCount",orders.length);
+  setText("productCount",itemCount);
+  setText("customerCount",customers);
+  setText("average",formatPrice(average));
+  setText("todayRevenue","Aujourd'hui : "+formatPrice(todayRevenue));
+
+  setText("analyticsRevenue",formatPrice(revenue));
+  setText("estimatedProfit",formatPrice(revenue*0.42));
+  setText("analyticsAverage",formatPrice(average));
+
+  setText("catalogCount",products.length);
+  setText("catalogSold",itemCount);
+
+  setText("metricOrders",orders.length);
+  setText("metricCustomers",customers);
+  setText("metricItems",itemCount);
+  setText("metricItemAverage",formatPrice(itemCount?revenue/itemCount:0));
+
+  const highest=orders.length?Math.max(...orders.map(totalOrder)):0;
+  setText("metricHighest",formatPrice(highest));
+
+  const counts=getProductCounts();
+  const best=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  setText("metricBest",best?products.find(p=>p.id===best[0]).name:"-");
+
+  renderOrders();
+  renderProducts();
+  renderTopProducts();
+  drawCharts();
+}
+
+function setText(id,value){
+  const el=document.getElementById(id);
+  if(el) el.textContent=value;
+}
+
+function getProductCounts(){
+  const counts={};
+  products.forEach(p=>counts[p.id]=0);
+
+  state.orders.forEach(order=>{
+    order.items.forEach(item=>{
+      counts[item.id]=(counts[item.id]||0)+item.qty;
+    });
+  });
+
+  return counts;
+}
+
+function renderOrders(){
+  const recent=document.getElementById("recentOrders");
+  const all=document.getElementById("allOrders");
+  if(!recent || !all) return;
+
+  recent.innerHTML="";
+  state.orders.slice(0,5).forEach(order=>{
+    recent.appendChild(createOrderElement(order));
+  });
+
+  const query=(document.getElementById("orderSearch")?.value || "").toLowerCase().trim();
+
+  const filtered=state.orders.filter(order=>{
+    const matchesSearch=String(order.id).includes(query) ||
+      order.client.toLowerCase().includes(query);
+
+    const matchesFilter=currentFilter==="Toutes" || order.status===currentFilter;
+    return matchesSearch && matchesFilter;
+  });
+
+  all.innerHTML="";
+
+  if(!filtered.length){
+    all.innerHTML='<div class="empty">Aucune commande trouvée.</div>';
+    return;
+  }
+
+  filtered.forEach(order=>all.appendChild(createOrderElement(order)));
+}
+
+function createOrderElement(order){
+  const el=document.createElement("div");
+  el.className="order";
+
+  const total=totalOrder(order);
+  const count=order.items.reduce((sum,i)=>sum+i.qty,0);
+  const date=new Date(order.createdAt);
+
+  let statusClass="";
+  if(order.status==="Préparation") statusClass="status-preparation";
+  if(order.status==="Expédiée") statusClass="status-shipped";
+
+  el.innerHTML=`
+    <div class="order-left">
+      <div class="order-id">#${order.id}</div>
+      <div class="order-info">${count} article${count>1?"s":""} · ${escapeHTML(order.client)}</div>
+      <div class="order-info">${formatDate(date)} à ${formatTime(date)}</div>
+    </div>
+    <div class="order-right">
+      <div class="order-price">${formatPrice(total)}</div>
+      <div class="order-status ${statusClass}">${order.status}</div>
+    </div>
+  `;
+
+  el.onclick=()=>showOrderDetail(order);
+  return el;
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+function setFilter(filter,button){
+  currentFilter=filter;
+  document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderOrders();
+}
+
+function showOrderDetail(order){
+  const content=document.getElementById("detailContent");
+  const date=new Date(order.createdAt);
+
+  const itemsHTML=order.items.map(item=>`
+    <div class="item">
+      <div>
+        <div class="item-name">${item.icon} ${escapeHTML(item.name)}</div>
+        <div style="font-size:10px;color:#888;margin-top:4px">Quantité : ${item.qty}</div>
+      </div>
+      <div class="item-price">${formatPrice(item.price*item.qty)}</div>
+    </div>
+  `).join("");
+
+  content.innerHTML=`
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-id">Commande #${order.id}</div>
+        <div class="detail-status">${order.status}</div>
+      </div>
+      <div style="font-size:12px;color:#777">${escapeHTML(order.client)}</div>
+      <div style="font-size:10px;color:#999;margin-top:5px">${formatDate(date)} à ${formatTime(date)}</div>
+    </div>
+    <div class="detail-card">
+      <div style="font-size:13px;font-weight:800;margin-bottom:5px">Articles commandés</div>
+      ${itemsHTML}
+      <div class="total"><span>Total</span><span>${formatPrice(totalOrder(order))}</span></div>
+    </div>
+  `;
+
+  openPage("orderDetail");
+}
+
+function renderProducts(){
+  const list=document.getElementById("productList");
+  if(!list) return;
+
+  const counts=getProductCounts();
+  list.innerHTML="";
+
+  products.forEach(product=>{
+    const sold=counts[product.id]||0;
+    const row=document.createElement("div");
+    row.className="product";
+
+    row.innerHTML=`
+      <div class="product-icon">${product.icon}</div>
+      <div class="product-info">
+        <div class="product-name">${product.name}</div>
+        <div class="product-price">${formatPrice(product.price)} · ${product.category}</div>
+      </div>
+      <div class="product-sold">${sold}<small>vendus</small></div>
+    `;
+
+    list.appendChild(row);
+  });
+}
+
+function renderTopProducts(){
+  const target=document.getElementById("topProducts");
+  if(!target) return;
+
+  const counts=getProductCounts();
+  const sorted=products.slice().sort((a,b)=>
+    (counts[b.id]||0)-(counts[a.id]||0)
+  ).slice(0,5);
+
+  target.innerHTML="";
+
+  sorted.forEach(product=>{
+    const row=document.createElement("div");
+    row.className="product";
+    row.innerHTML=`
+      <div class="product-icon">${product.icon}</div>
+      <div class="product-info">
+        <div class="product-name">${product.name}</div>
+        <div class="product-price">${formatPrice(product.price)}</div>
+      </div>
+      <div class="product-sold">${counts[product.id]||0}<small>vendus</small></div>
+    `;
+    target.appendChild(row);
+  });
+}
+
+function setPeriod(days,button){
+  chartPeriod=days;
+  document.querySelectorAll(".period").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  drawLineChart("salesChart",days);
+}
+
+function drawCharts(){
+  drawLineChart("salesChart",chartPeriod);
+  drawLineChart("analyticsChart",30);
+  drawDonut();
+}
+
+function getDailyRevenue(days){
+  const result=[];
+  const today=new Date();
+
+  for(let i=days-1;i>=0;i--){
+    const date=new Date(today);
+    date.setHours(0,0,0,0);
+    date.setDate(date.getDate()-i);
+
+    const next=new Date(date);
+    next.setDate(next.getDate()+1);
+
+    const amount=state.orders.filter(order=>{
+      const d=new Date(order.createdAt);
+      return d>=date && d<next;
+    }).reduce((sum,o)=>sum+totalOrder(o),0);
+
+    result.push({
+      label:date.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"}),
+      value:amount
+    });
+  }
+
+  return result;
+}
+
+function drawLineChart(canvasId,days){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas) return;
+
+  const rect=canvas.getBoundingClientRect();
+  const width=Math.max(280,rect.width);
+  const height=rect.height || 205;
+  const ratio=window.devicePixelRatio||1;
+
+  canvas.width=width*ratio;
+  canvas.height=height*ratio;
+
+  const ctx=canvas.getContext("2d");
+  ctx.scale(ratio,ratio);
+
+  const data=getDailyRevenue(days);
+  const pad={left:8,right:8,top:18,bottom:25};
+  const chartW=width-pad.left-pad.right;
+  const chartH=height-pad.top-pad.bottom;
+  const max=Math.max(100,...data.map(d=>d.value))*1.2;
+
+  ctx.clearRect(0,0,width,height);
+
+  ctx.font="9px Arial";
+  ctx.fillStyle="#999";
+  ctx.strokeStyle="#eeeeee";
+  ctx.lineWidth=1;
+
+  for(let i=0;i<4;i++){
+    const y=pad.top+(chartH/3)*i;
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y);
+    ctx.lineTo(width-pad.right,y);
+    ctx.stroke();
+  }
+
+  const points=data.map((d,i)=>({
+    x:pad.left+(data.length===1?0:(i/(data.length-1))*chartW),
+    y:pad.top+chartH-(d.value/max)*chartH,
+    value:d.value
+  }));
+
+  if(points.length){
+    const gradient=ctx.createLinearGradient(0,pad.top,0,height);
+    gradient.addColorStop(0,"rgba(30,30,30,.18)");
+    gradient.addColorStop(1,"rgba(30,30,30,0)");
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x,points[0].y);
+
+    for(let i=1;i<points.length;i++){
+      const prev=points[i-1];
+      const current=points[i];
+      const mid=(prev.x+current.x)/2;
+      ctx.bezierCurveTo(mid,prev.y,mid,current.y,current.x,current.y);
+    }
+
+    ctx.lineTo(points[points.length-1].x,pad.top+chartH);
+    ctx.lineTo(points[0].x,pad.top+chartH);
+    ctx.closePath();
+    ctx.fillStyle=gradient;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x,points[0].y);
+
+    for(let i=1;i<points.length;i++){
+      const prev=points[i-1];
+      const current=points[i];
+      const mid=(prev.x+current.x)/2;
+      ctx.bezierCurveTo(mid,prev.y,mid,current.y,current.x,current.y);
+    }
+
+    ctx.strokeStyle="#202020";
+    ctx.lineWidth=2.5;
+    ctx.lineCap="round";
+    ctx.stroke();
+
+    points.forEach((p,i)=>{
+      if(days<=7 || i%5===0 || i===points.length-1){
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,3,0,Math.PI*2);
+        ctx.fillStyle="#202020";
+        ctx.fill();
+      }
+    });
+
+    ctx.fillStyle="#999";
+    ctx.textAlign="center";
+    const step=days<=7?1:Math.ceil(days/6);
+
+    points.forEach((p,i)=>{
+      if(i%step===0 || i===points.length-1){
+        ctx.fillText(data[i].label,p.x,height-6);
+      }
+    });
+  }
+}
+
+function drawDonut(){
+  const canvas=document.getElementById("donutChart");
+  const legend=document.getElementById("donutLegend");
+  if(!canvas || !legend) return;
+
+  const size=155;
+  const ratio=window.devicePixelRatio||1;
+  canvas.width=size*ratio;
+  canvas.height=size*ratio;
+
+  const ctx=canvas.getContext("2d");
+  ctx.scale(ratio,ratio);
+
+  const counts=getProductCounts();
+  const categories={};
+
+  products.forEach(product=>{
+    categories[product.category]=(categories[product.category]||0)+(counts[product.id]||0);
+  });
+
+  const colors=["#171717","#555","#888","#b4b4b4","#dedede"];
+  const values=Object.entries(categories).filter(entry=>entry[1]>0);
+  const total=values.reduce((sum,entry)=>sum+entry[1],0);
+
+  ctx.clearRect(0,0,size,size);
+
+  let angle=-Math.PI/2;
+
+  if(total===0){
+    ctx.beginPath();
+    ctx.arc(77.5,77.5,58,0,Math.PI*2);
+    ctx.strokeStyle="#eee";
+    ctx.lineWidth=17;
+    ctx.stroke();
+  }else{
+    values.forEach(([name,value],i)=>{
+      const slice=value/total*Math.PI*2;
+
+      ctx.beginPath();
+      ctx.arc(77.5,77.5,58,angle,angle+slice);
+      ctx.strokeStyle=colors[i%colors.length];
+      ctx.lineWidth=17;
+      ctx.lineCap="butt";
+      ctx.stroke();
+
+      angle+=slice;
+    });
+  }
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#171717";
+  ctx.font="bold 20px Arial";
+  ctx.fillText(total,77.5,75);
+  ctx.fillStyle="#999";
+  ctx.font="9px Arial";
+  ctx.fillText("ARTICLES",77.5,91);
+
+  legend.innerHTML="";
+
+  values.forEach(([name,value],i)=>{
+    const row=document.createElement("div");
+    row.className="donut-row";
+    row.innerHTML=`
+      <span class="legend-dot" style="background:${colors[i%colors.length]}"></span>
+      <span>${name}</span>
+      <strong>${Math.round(value/total*100)}%</strong>
+    `;
+    legend.appendChild(row);
+  });
+}
+
+function showNotification(order){
+  const area=document.getElementById("notificationArea");
+  const el=document.createElement("div");
+  el.className="notification";
+
+  el.innerHTML=`
+    <div class="notification-title">🔔 Nouvelle commande</div>
+    <div class="notification-text">
+      #${order.id} · ${escapeHTML(order.client)} ·
+      <strong>${formatPrice(totalOrder(order))}</strong>
+    </div>
+  `;
+
+  area.appendChild(el);
+
+  setTimeout(()=>{
+    el.style.opacity="0";
+    el.style.transition=".3s";
+    setTimeout(()=>el.remove(),350);
+  },3500);
+}
+
+function openPage(page,element){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+  const target=document.getElementById(page);
+  if(target) target.classList.add("active");
+
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+
+  if(element){
+    element.classList.add("active");
+  }else{
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      if(item.getAttribute("onclick")?.includes("'"+page+"'")){
+        item.classList.add("active");
+      }
+    });
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  if(page==="analytics" || page==="home"){
+    setTimeout(drawCharts,50);
+  }
 }
 
 function toggleSimulation(){
+  state.simulationActive=!state.simulationActive;
 
-simulationActive=!simulationActive;
+  const sw=document.getElementById("switch");
+  sw.classList.toggle("off",!state.simulationActive);
 
-const switchElement=
-document.getElementById("switch");
-
-if(simulationActive){
-
-switchElement.style.background="#222";
-
-startSimulation();
-
-}else{
-
-switchElement.style.background="#bbb";
-
-clearInterval(timer);
-
+  saveState();
+  startSimulation();
 }
 
-}
+function setSpeed(time,button){
+  intervalTime=time;
+  state.intervalTime=time;
 
-function updateChart(){
-
-const bars=
-document.querySelectorAll(".bar");
-
-bars.forEach((bar,index)=>{
-
-if(index===bars.length-1){
-
-bar.style.height=
-(30+Math.random()*65)+"%";
-
-}
-
-});
-
-}
-
-updateStats();
-
-</script>
-
-<script>
-
-const VELMORA_PUSH_ENDPOINT =
-"https://rqfutnxazzcdgekxmlsz.supabase.co/functions/v1/send-notification";
-
-const VELMORA_VAPID_PUBLIC_KEY =
-"BNc1UQaRyHGNYsy65HllgzqCevvtZDr5fEShTrmXGhuEi0wKK01i0IM7kUdLP0JAnExEmtpXxSrAHWQnK_ZX0jk";
-
-
-function urlBase64ToUint8Array(base64String){
-
-const padding =
-"=".repeat(
-(4-(base64String.length%4))%4
-);
-
-const base64 =
-(base64String+padding)
-.replace(/-/g,"+")
-.replace(/_/g,"/");
-
-const rawData=
-window.atob(base64);
-
-return Uint8Array.from(
-[...rawData].map(
-char=>char.charCodeAt(0)
-)
-);
-
-}
-
-
-async function enablePushNotifications(){
-
-const button=
-document.getElementById("pushButton");
-
-try{
-
-if(!("serviceWorker" in navigator)){
-
-throw new Error(
-"Service Worker non disponible"
-);
-
-}
-
-if(!("PushManager" in window)){
-
-throw new Error(
-"Web Push non disponible"
-);
-
-}
-
-if(!("Notification" in window)){
-
-throw new Error(
-"Notifications non disponibles"
-);
-
-}
-
-button.textContent=
-"Activation...";
-
-const permission=
-await Notification.requestPermission();
-
-if(permission!=="granted"){
-
-button.textContent=
-"Autorisation refusée";
-
-return;
-
-}
-
-const registration=
-await navigator.serviceWorker.ready;
-
-let subscription=await registration.pushManager.getSubscription();
-if(!subscription){
-  subscription=await registration.pushManager.subscribe({
-    userVisibleOnly:true,
-    applicationServerKey:urlBase64ToUint8Array(VELMORA_VAPID_PUBLIC_KEY)
+  document.querySelectorAll(".speed-button").forEach(b=>{
+    if(b.closest(".speed-buttons")){
+      b.classList.remove("active");
+    }
   });
 
-
-
+  button.classList.add("active");
+  saveState();
+  startSimulation();
 }
 
-const response=
-await fetch(
-VELMORA_PUSH_ENDPOINT,
-{
+function restoreSettings(){
+  intervalTime=state.intervalTime||12000;
 
-method:"POST",
+  const sw=document.getElementById("switch");
+  sw.classList.toggle("off",!state.simulationActive);
 
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:JSON.stringify({
-
-subscription:
-subscription.toJSON(),
-
-title:
-"Velmora",
-
-body:
-"Notifications activées avec succès.",
-
-url:
-"https://meonixoff.github.io/Velmora/"
-
-})
-
-}
-);
-
-const result=
-await response.json();
-
-if(
-!response.ok ||
-!result.success
-){
-
-throw new Error(
-result.error ||
-"Impossible d'enregistrer les notifications"
-);
-
+  document.querySelectorAll(".speed-button").forEach(button=>{
+    const action=button.getAttribute("onclick")||"";
+    button.classList.toggle("active",action.includes(String(intervalTime)));
+  });
 }
 
-button.textContent=
-"Activées";
+function init(){
+  loadState();
+  catchUpOffline();
+  restoreSettings();
+  updateDashboard();
+  startSimulation();
 
-button.disabled=true;
+  window.addEventListener("resize",()=>{
+    drawCharts();
+  });
 
-}catch(error){
+  window.addEventListener("pagehide",()=>{
+    saveState();
+  });
 
-console.error(
-"Velmora Push:",
-error
-);
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="hidden"){
+      saveState();
+    }
+  });
 
-button.textContent=
-"Réessayer";
-
-alert(
-"Impossible d'activer les notifications : "+
-(error.message ||
-"erreur inconnue")
-);
-
+  setInterval(saveState,30000);
 }
 
-}
-
-
-if("serviceWorker" in navigator){
-
-window.addEventListener(
-"load",
-()=>{
-
-navigator.serviceWorker
-.register("./sw.js")
-.catch(error=>{
-
-console.error(
-"Service Worker:",
-error
-);
-
-});
-
-}
-);
-
-}
+init();
 
 </script>
-
 </body>
+</html>
